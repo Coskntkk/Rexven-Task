@@ -49,15 +49,7 @@ function App() {
           setIsFail(true);
         });
     } else {
-      axios.get(`http://localhost:3010/students?page=${page}`)
-        .then(res => {
-          setStudents(res.data.students);
-          setStudentCount(res.data.totalStudents);
-          setTotalPages(Math.ceil(res.data.totalStudents / res.data.students.length));
-        })
-        .catch(err => {
-          setIsFail(true);
-        });
+      setIsLoading(true);
     }
     e.target.elements.keyword.value = '';
   }
@@ -82,7 +74,7 @@ function App() {
                 <button type="submit" className="btn btn-primary">Search</button> 
               </form>
             </div>
-            <h3>Enter keyword to search or leave blank to see all students</h3>
+            <h3>Enter keyword to search or leave it blank to see all students</h3>
           </div>
         </div>
       </div>
