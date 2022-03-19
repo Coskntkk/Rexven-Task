@@ -11,11 +11,15 @@ exports.getAllStudents = async (req, res) => {
             .skip((currentPage - 1) * studentsPerPage)
             .limit(studentsPerPage);
 
+        // Get total students count
+        const studentCount = await Student.countDocuments();
+
         // Return response
         return res.status(200).json({
             status: "success",
             students,
             totalPages: Math.ceil(students.length / studentsPerPage),
+            totalStudents: studentCount
         });
     } catch (err) {
         res.status(500).json({
