@@ -28,20 +28,65 @@ function App() {
         setStudents(res.data.students);
         setStudentCount(res.data.totalStudents);
         setTotalPages(Math.ceil(res.data.totalStudents / res.data.students.length));
-        setIsLoading(false);
       })
       .catch(err => {
         setIsFail(true);
-        setIsLoading(false);
       });
-  }, [page]);
+      setIsLoading(false);
+  }, [page, isLoading]);
+
+  function searchStudent(e){
+    e.preventDefault();
+    const keyword = e.target.elements.keyword.value;
+    if (keyword.length > 0) {
+      axios.get(`http://localhost:3010/students/search/${keyword}`)
+        .then(res => {
+          setStudents(res.data.students);
+          setStudentCount(res.data.totalStudents);
+          setTotalPages(Math.ceil(res.data.totalStudents / res.data.students.length));
+        })
+        .catch(err => {
+          setIsFail(true);
+        });
+    } else {
+      axios.get(`http://localhost:3010/students?page=${page}`)
+        .then(res => {
+          setStudents(res.data.students);
+          setStudentCount(res.data.totalStudents);
+          setTotalPages(Math.ceil(res.data.totalStudents / res.data.students.length));
+        })
+        .catch(err => {
+          setIsFail(true);
+        });
+    }
+    e.target.elements.keyword.value = '';
+  }
 
   return (<>
     {isLoading && <div className="spinner-border text-primary" role="status">
-      <h1>LOADING</h1>
+      <h1 style={{marginLeft: "100px", marginTop: "100px"}}>LOADING</h1>
+    </div>}
+
+    {isFail && <div className="alert alert-danger" role="alert">
+      <h1 style={{marginLeft: "100px", marginTop: "100px"}}>FAILED</h1>
     </div>}
 
     {!isLoading && <div className="container-xl">
+
+      <div className="container">
+        <div className="row height d-flex justify-content-center align-items-center">
+          <div className="col-md-8">
+            <div className="search"><i className="fa fa-search"></i>
+              <form onSubmit={(e) => searchStudent(e)}>
+                <input type="text" name="keyword" className="form-control" placeholder="Search by Name or Surname" /> 
+                <button type="submit" className="btn btn-primary">Search</button> 
+              </form>
+            </div>
+            <h3>Enter keyword to search or leave blank to see all students</h3>
+          </div>
+        </div>
+      </div>
+
       <div className="table-responsive">
         <div className="table-wrapper">
           <div className="table-title">
@@ -50,8 +95,8 @@ function App() {
                 <h2>Student <b>Management</b></h2>
               </div>
               <div className="col-sm-7">
-                <AddNew />
-                <Import />
+                <AddNew setIsLoading={setIsLoading} setIsFail={setIsFail} />
+                <Import setIsLoading={setIsLoading} setIsFail={setIsFail} />
               </div>
             </div>
           </div>
@@ -74,7 +119,7 @@ function App() {
             <tbody>
               {students.map(student => {
                 return (
-                  <Student student={student} key={nanoid()} />
+                  <Student student={student} key={nanoid()} setIsLoading={setIsLoading} setIsFail={setIsFail}/>
                 )
               })}
             </tbody>

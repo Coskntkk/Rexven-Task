@@ -112,7 +112,7 @@ exports.deleteStudentById = async (req, res) => {
 exports.getStudentByName = async (req, res) => {
     try {
         // Get student by first or last name
-        const student = await Student.find({
+        const students = await Student.find({
             $or: [
                 { firstName: { $regex: req.params.name, $options: "i" } },
                 { lastName: { $regex: req.params.name, $options: "i" } },
@@ -122,7 +122,9 @@ exports.getStudentByName = async (req, res) => {
         // Return response
         return res.status(200).json({
             status: "success",
-            student: student,
+            students: students,
+            totalStudents: students.length,
+            totalPages: 1,
         });
     } catch (err) {
         res.status(500).json({
