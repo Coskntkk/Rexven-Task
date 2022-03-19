@@ -1,4 +1,4 @@
-import Student from "../models/Student";
+const Student = require("../models/Student");
 
 // Get all students (pagination)
 exports.getAllStudents = async (req, res) => {

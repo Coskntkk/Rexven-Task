@@ -12,17 +12,17 @@ mongoConnect();
 const app = express();
 
 // Middlewares
-app.use(express.static(__dirname + "/public"));
 app.use(cors());
 app.use(bodyParser.json());
 app.use(methodOverride("_method", { methods: ["POST", "GET"] }));
 
 // Import routes
 const studentRoute = require("./routers/studentRoute");
-// const importRoute = require("./routers/importRoute");
+const importRoute = require("./routers/importRoute");
 
 // Set routes
 app.use("/students", studentRoute);
+app.use("/import", importRoute);
 
 // Start the server
 const PORT = process.env.PORT || 3010;
