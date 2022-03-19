@@ -5,18 +5,19 @@ const router = express.Router();
 const studentController = require("../controllers/studentController");
 
 // .../students
-router.route("/")
+router
+    .route("/")
     .get(studentController.getAllStudents)
     .post(studentController.createStudent);
 
 // .../students/:id
-router.route("/:id")
+router
+    .route("/:id")
     .get(studentController.getStudentById)
     .put(studentController.updateStudentById)
     .delete(studentController.deleteStudentById);
 
-router.route("/search/:name")
-    .get(studentController.getStudentByName);
+router.route("/search/:name").get(studentController.getStudentByName);
 
 // Export router
 module.exports = router;

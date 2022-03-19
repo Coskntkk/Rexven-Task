@@ -19,7 +19,7 @@ exports.getAllStudents = async (req, res) => {
             status: "success",
             students,
             totalPages: Math.ceil(students.length / studentsPerPage),
-            totalStudents: studentCount
+            totalStudents: studentCount,
         });
     } catch (err) {
         res.status(500).json({
@@ -27,7 +27,7 @@ exports.getAllStudents = async (req, res) => {
             message: err.message,
         });
     }
-}
+};
 
 // Create a new student
 exports.createStudent = async (req, res) => {
@@ -49,7 +49,7 @@ exports.createStudent = async (req, res) => {
             message: err.message,
         });
     }
-}
+};
 
 // Get student by first or last name
 exports.getStudentById = async (req, res) => {
@@ -68,7 +68,7 @@ exports.getStudentById = async (req, res) => {
             message: err.message,
         });
     }
-}
+};
 
 // Update student
 exports.updateStudentById = async (req, res) => {
@@ -106,7 +106,7 @@ exports.deleteStudentById = async (req, res) => {
             message: err.message,
         });
     }
-}
+};
 
 // Get student by first or last name
 exports.getStudentByName = async (req, res) => {
