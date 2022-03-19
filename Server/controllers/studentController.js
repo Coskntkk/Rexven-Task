@@ -4,20 +4,18 @@ const Student = require("../models/Student");
 exports.getAllStudents = async (req, res) => {
     try {
         // Get all students
-        const students = await Student.find();
+        const currentPage = req.query.page || 1;
+        const studentsPerPage = 10;
 
-        // Pagination
-        const page = parseInt(req.query.page);
-        const limit = 10;
-        const startIndex = (page - 1) * limit;
-        const endIndex = page * limit;
-        const currentStudents = students.slice(startIndex, endIndex);
+        const students = await Student.find({})
+            .skip((currentPage - 1) * studentsPerPage)
+            .limit(studentsPerPage);
 
         // Return response
         return res.status(200).json({
             status: "success",
-            students: currentStudents,
-            totalPages: Math.ceil(students.length / limit),
+            students,
+            totalPages: Math.ceil(students.length / studentsPerPage),
         });
     } catch (err) {
         res.status(500).json({
